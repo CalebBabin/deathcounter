@@ -23,6 +23,10 @@ const client = new tmi.Client({
 	channels: channels
 });
 
+let count = 31;
+let lastUpdate = Date.now();
+let defaultText = "deaths";
+
 let conditions = query_vars.whitelist ? query_vars.whitelist.split(',') : ['mod', 'subscriber', 'vip'];
 
 conditions.push('mod');
@@ -31,9 +35,18 @@ const adminPerms = ['mod', 'moderator'];
 
 const numberElement = document.createElement('span');
 
+const textElement = document.createElement('span');
+textElement.textContent = defaultText;
+textElement.style.display = 'block';
+textElement.style.position = 'absolute';
+textElement.style.fontSize = '50%';
+
 document.addEventListener('DOMContentLoaded', () => {
 	document.body.appendChild(numberElement);
 	numberElement.style.position = 'relative';
+	
+	document.body.append(textElement);
+	
 	update();
 });
 
@@ -41,6 +54,13 @@ const update = () => {
 	numberElement.textContent = Number(count).toLocaleString();
 	numberElement.style.left = position.x + 'px';
 	numberElement.style.top = position.y + 'px';
+	
+	if(count == 69) {
+		textElement.textContent = "nice";
+	}
+	else {
+		textElement.textContent = defaultText;
+	}
 }
 
 function checkUpdateTime() {
@@ -54,9 +74,6 @@ function checkUpdateTime() {
 	lastUpdate = Date.now();
 	return true;
 }
-
-let count = 30;
-let lastUpdate = Date.now();
 
 const position = {
 	x: 0,
