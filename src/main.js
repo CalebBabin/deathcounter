@@ -23,28 +23,53 @@ const client = new tmi.Client({
 	channels: channels
 });
 
+let conditions = query_vars.whitelist ? query_vars.whitelist.split(',') : ['mod', 'subscriber', 'vip'];
+
+const adminPerms = ['mod'];
+
+const update = () => {
+	document.body.textContent = Number(count).toLocaleString();
+}
+
 let count = 0;
-document.body.textContent = Number(count).toLocaleString();
+update();
 client.addListener('message', (channel, user, message, self) => {
-	if (user.subscriber) {
-		if (message.match(/!add/i) || message.match(/^\+1/i)) {
-			count++;
-			document.body.textContent = Number(count).toLocaleString();
-		} else if (message.match(/!sub/i) || message.match(/^\-1/i)) {
-			count--;
-			document.body.textContent = Number(count).toLocaleString();
+
+	let permission = false;
+	for (let index = 0; index < conditions.length; index++) {
+		if (user[conditions[index]] || (user.badges && user.badges[conditions[index]])) {
+			permission = true;
+			break;
 		}
 	}
 
-	if (user['display-name'].toLowerCase() === 'antimattertape' || user['display-name'].toLowerCase() === 'moonmoon' || user.mod) {
+	if (permission) {
+		if (message.match(/!add/i) || message.match(/^\+1/i)) {
+			count++;
+			update();
+		} else if (message.match(/!sub/i) || message.match(/^\-1/i)) {
+			count--;
+			update();
+		}
+	}
+
+	let adminPermission = false;
+	for (let index = 0; index < adminPerms.length; index++) {
+		if (user[adminPerms[index]] || (user.badges && user.badges[adminPerms[index]])) {
+			adminPermission = true;
+			break;
+		}
+	}
+
+	if (user['display-name'].toLowerCase() === 'antimattertape' || user['display-name'].toLowerCase() === 'moonmoon' || adminPermission) {
 		if (message === "!refresh") {
 			window.location.reload();
 		}
 		if (message.match(/^!set/)) {
 			let newCount = message.split(' ')[1];
-			if (newCount) {
-				count = newCount;
-				document.body.textContent = Number(count).toLocaleString();
+			if (newCount && !isNaN(Number(newCount))) {
+				count = Number(newCount);
+				update();
 			}
 		}
 	}
