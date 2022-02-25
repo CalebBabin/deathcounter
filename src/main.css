@@ -17,7 +17,7 @@ body {
 }
 
 span {
-	transition: all 0.5s ease;
+	transition: all 3s ease;
 }
 span::after {
 	content: 'deaths';
