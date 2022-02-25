@@ -43,7 +43,7 @@ const update = () => {
 	numberElement.style.top = position.y + 'px';
 }
 
-let count = 24;
+let count = 26;
 
 const position = {
 	x: 0,
