@@ -38,23 +38,47 @@ const numberElement = document.createElement('span');
 document.addEventListener('DOMContentLoaded', () => {
 	document.body.appendChild(numberElement);
 	numberElement.style.position = 'relative';
-	update();
+	update({});
 });
 
-const update = () => {
-	numberElement.textContent = Number(count).toLocaleString();
-	numberElement.style.left = position.x + 'px';
-	numberElement.style.top = position.y + 'px';
+const update = (props) => {
+	console.log('updating', props)
+	for (const key in props) {
+		if (Object.hasOwnProperty.call(props, key)) {
+			settings[key] = props[key];
+		}
+	}
+	localStorage.setItem('settings', JSON.stringify(settings));
+	numberElement.textContent = Number(settings.count).toLocaleString();
+	numberElement.style.left = settings.x + 'px';
+	numberElement.style.top = settings.y + 'px';
+	numberElement.style.fontSize = settings.fontSize + 'px';
+	numberElement.style.color = settings.color;
+	numberElement.style.opacity = settings.opacity;
+	console.log(settings)
 }
 
-let count = 30;
-
-const position = {
+const defaultSettings = {
 	x: 0,
 	y: 0,
+	count: 38,
+	fontSize: 30,
+	opacity: 1,
+	color: '#ffffff',
 }
+let settings = { ...defaultSettings };
 
-update();
+try {
+	const storedSettings = JSON.parse(localStorage.getItem('settings'));
+	if (storedSettings) {
+		settings = { ...settings, ...storedSettings };
+	}
+} catch (e) {
+	console.log(e);
+}
+update({});
+
+
 client.addListener('message', (channel, user, message, self) => {
 	const split = message.split(' ');
 
@@ -68,13 +92,9 @@ client.addListener('message', (channel, user, message, self) => {
 
 	if (permission) {
 		if (message.match(/!add/i) || message.match(/^\+1/i)) {
-			count++;
-			console.log(user['display-name'], message);
-			update();
+			update({ count: count + 1 });
 		} else if (message.match(/!sub/i) || message.match(/^\-1/i)) {
-			count--;
-			console.log(user['display-name'], message);
-			update();
+			update({ count: count - 1 });
 		}
 	}
 
@@ -90,55 +110,63 @@ client.addListener('message', (channel, user, message, self) => {
 		if (message === "!refresh") {
 			window.location.reload();
 		}
-		if (message.match(/^!set/)) {
-			let newCount = message.split(' ')[1];
+		if (split[0] === "!set") {
+			let newCount = split[1];
 			if (newCount && !isNaN(Number(newCount))) {
-				count = Number(newCount);
-				console.log(user['display-name'], message);
-				update();
+				update({ count: Number(newCount) });
 			}
 		}
 
-		if (message.match(/^!move/)) {
+		if (split[0] === "!move") {
 			if (split.length >= 3) {
 				const direction = split[1].toLowerCase();
-				let distance = message.split(' ')[2];
+				let distance = split[2];
 				if (distance && !isNaN(Number(distance))) {
 					switch (direction) {
 						case 'up':
-							position.y -= Number(distance);
-							update();
+							update({ y: settings.y - Number(distance) });
 							break;
 						case 'down':
-							position.y += Number(distance);
-							update();
+							update({ y: settings.y + Number(distance) });
 							break;
 						case 'left':
-							position.x -= Number(distance);
-							update();
+							update({ x: settings.x - Number(distance) });
 							break;
 						case 'right':
-							position.x += Number(distance);
-							update();
+							update({ x: settings.x + Number(distance) });
 							break;
 					}
 				}
 			}
 		}
 
+		if (split[0] === "!moveTo") {
+			if (split.length >= 3) {
+				let x = split[1];
+				let y = split[2];
+				if (x && !isNaN(Number(x)) && y && !isNaN(Number(y))) {
+					update({ x: Number(x), y: Number(y) });
+				}
+			}
+		}
+
 		if (split[0] === '!color' && split.length >= 2) {
-			const color = split[1];
-			numberElement.style.color = color;
+			update({ color: split[1] });
 		}
 		if (split[0] === '!size' && split.length >= 2) {
 			const size = split[1];
-			numberElement.style.fontSize = size + 'px';
+			if (size && !isNaN(Number(size))) {
+				update({ fontSize: Number(size) });
+			}
 		}
 		if (split[0] === '!hide') {
-			numberElement.style.opacity = '0';
+			update({ opacity: 0 });
 		}
 		if (split[0] === '!show') {
-			numberElement.style.opacity = '1';
+			update({ opacity: 1 });
+		}
+		if (split[0] === '!reset') {
+			update(defaultSettings);
 		}
 	}
 });
