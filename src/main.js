@@ -100,7 +100,6 @@ client.addListener('message', (channel, user, message, self) => {
 		}
 
 		if (message.match(/^!move/)) {
-			const split = message.split(' ');
 			if (split.length >= 3) {
 				const direction = split[1].toLowerCase();
 				let distance = message.split(' ')[2];
@@ -125,6 +124,21 @@ client.addListener('message', (channel, user, message, self) => {
 					}
 				}
 			}
+		}
+
+		if (split[0] === '!color' && split.length >= 2) {
+			const color = split[1];
+			numberElement.style.color = color;
+		}
+		if (split[0] === '!size' && split.length >= 2) {
+			const size = split[1];
+			numberElement.style.fontSize = size + 'px';
+		}
+		if (split[0] === '!hide') {
+			numberElement.style.opacity = '0';
+		}
+		if (split[0] === '!show') {
+			numberElement.style.opacity = '1';
 		}
 	}
 });
