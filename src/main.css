@@ -6,5 +6,10 @@ canvas {
     margin: 0;
 	color: white;
 	font-family: sans-serif;
-	font-size: 10vw;
+	font-size: 30px;
+}
+
+body {
+	background-color: black;
+	padding: 5px;
 }
