@@ -26,12 +26,11 @@ const client = new tmi.Client({
 let count = 0;
 document.body.textContent = Number(count).toLocaleString();
 client.addListener('message', (channel, user, message, self) => {
-	console.log(user.subscriber, message);
 	if (user.subscriber) {
-		if (message.match(/!add/i)) {
+		if (message.match(/!add/i) || message.match(/^\+1/i)) {
 			count++;
 			document.body.textContent = Number(count).toLocaleString();
-		} else if (message.match(/!sub/i)) {
+		} else if (message.match(/!sub/i) || message.match(/^\-1/i)) {
 			count--;
 			document.body.textContent = Number(count).toLocaleString();
 		}
