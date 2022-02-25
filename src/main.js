@@ -29,11 +29,27 @@ conditions.push('mod');
 
 const adminPerms = ['mod', 'moderator'];
 
+const numberElement = document.createElement('span');
+
+document.addEventListener('DOMContentLoaded', () => {
+	document.body.appendChild(numberElement);
+	numberElement.style.position = 'relative';
+	update();
+});
+
 const update = () => {
-	document.body.textContent = Number(count).toLocaleString();
+	numberElement.textContent = Number(count).toLocaleString();
+	numberElement.style.left = position.x + 'px';
+	numberElement.style.top = position.y + 'px';
 }
 
 let count = 24;
+
+const position = {
+	x: 0,
+	y: 0,
+}
+
 update();
 client.addListener('message', (channel, user, message, self) => {
 
@@ -72,6 +88,34 @@ client.addListener('message', (channel, user, message, self) => {
 			if (newCount && !isNaN(Number(newCount))) {
 				count = Number(newCount);
 				update();
+			}
+		}
+
+		if (message.match(/^!move/)) {
+			const split = message.split(' ');
+			if (split.length >= 3) {
+				const direction = split[1].toLowerCase();
+				let distance = message.split(' ')[2];
+				if (distance && !isNaN(Number(distance))) {
+					switch (direction) {
+						case 'up':
+							position.y -= Number(distance);
+							update();
+							break;
+						case 'down':
+							position.y += Number(distance);
+							update();
+							break;
+						case 'left':
+							position.x -= Number(distance);
+							update();
+							break;
+						case 'right':
+							position.x += Number(distance);
+							update();
+							break;
+					}
+				}
 			}
 		}
 	}
