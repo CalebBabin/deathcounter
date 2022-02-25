@@ -24,10 +24,14 @@ const client = new tmi.Client({
 });
 
 let conditions = query_vars.whitelist ? query_vars.whitelist.split(',') : ['mod', 'subscriber', 'vip'];
-
-conditions.push('mod');
+conditions.push('mod', 'broadcaster');
 
 const adminPerms = ['mod', 'moderator'];
+const whitelistedUsers = {
+	'antimattertape': true,
+	'moonmoon': true,
+	'je_ek': true,
+}
 
 const numberElement = document.createElement('span');
 
@@ -52,6 +56,7 @@ const position = {
 
 update();
 client.addListener('message', (channel, user, message, self) => {
+	const split = message.split(' ');
 
 	let permission = false;
 	for (let index = 0; index < conditions.length; index++) {
@@ -81,7 +86,7 @@ client.addListener('message', (channel, user, message, self) => {
 		}
 	}
 
-	if (user['display-name'].toLowerCase() === 'antimattertape' || user['display-name'].toLowerCase() === 'moonmoon' || adminPermission) {
+	if (whitelistedUsers[user['display-name'].toLowerCase()] || adminPermission) {
 		if (message === "!refresh") {
 			window.location.reload();
 		}
