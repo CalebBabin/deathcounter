@@ -57,8 +57,7 @@ const update = () => {
 	
 	if(count == 69) {
 		textElement.textContent = "nice";
-	}
-	else {
+	} else {
 		textElement.textContent = defaultText;
 	}
 }
