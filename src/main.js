@@ -58,6 +58,7 @@ const update = (props) => {
 	console.log(settings)
 }
 
+
 const defaultSettings = {
 	x: 60,
 	y: 25,
@@ -65,6 +66,7 @@ const defaultSettings = {
 	fontSize: 50,
 	opacity: 1,
 	color: '#ffffff',
+	flashColor: '#ff0000',
 }
 let settings = { ...defaultSettings };
 
@@ -79,6 +81,27 @@ try {
 update({});
 
 
+const transitionDuration = 3000;
+const flashDuration = 500;
+numberElement.style.transition = `all ${transitionDuration}ms ease`;
+
+let flashing = false;
+const flash = () => {
+	if (flashing) return;
+	numberElement.style.transition = `all ${flashDuration}ms ease-out`;
+	flashing = true;
+	window.requestAnimationFrame(() => {
+		numberElement.style.color = settings.flashColor;
+	})
+	setTimeout(() => {
+		flashing = false;
+		numberElement.style.transition = `all ${transitionDuration}ms ease`;
+		window.requestAnimationFrame(() => {
+			numberElement.style.color = settings.color;
+		})
+	}, flashDuration);
+}
+
 client.addListener('message', (channel, user, message, self) => {
 	const split = message.split(' ');
 
@@ -92,8 +115,10 @@ client.addListener('message', (channel, user, message, self) => {
 
 	if (permission) {
 		if (message.match(/!add/i) || message.match(/^\+1/i)) {
+			flash();
 			update({ count: settings.count + 1 });
 		} else if (message.match(/!sub/i) || message.match(/^\-1/i)) {
+			flash();
 			update({ count: settings.count - 1 });
 		}
 	}
@@ -113,6 +138,7 @@ client.addListener('message', (channel, user, message, self) => {
 		if (split[0] === "!set") {
 			let newCount = split[1];
 			if (newCount && !isNaN(Number(newCount))) {
+				flash();
 				update({ count: Number(newCount) });
 			}
 		}
@@ -152,6 +178,9 @@ client.addListener('message', (channel, user, message, self) => {
 
 		if (split[0] === '!color' && split.length >= 2) {
 			update({ color: split[1] });
+		}
+		if (split[0] === '!flashColor' && split.length >= 2) {
+			update({ flashColor: split[1] });
 		}
 		if (split[0] === '!size' && split.length >= 2) {
 			const size = split[1];
