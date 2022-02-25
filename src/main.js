@@ -25,7 +25,9 @@ const client = new tmi.Client({
 
 let conditions = query_vars.whitelist ? query_vars.whitelist.split(',') : ['mod', 'subscriber', 'vip'];
 
-const adminPerms = ['mod'];
+conditions.push('mod');
+
+const adminPerms = ['mod', 'moderator'];
 
 const update = () => {
 	document.body.textContent = Number(count).toLocaleString();
