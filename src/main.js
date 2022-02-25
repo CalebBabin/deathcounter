@@ -47,8 +47,7 @@ function checkUpdateTime() {
 	
 	let secondsPerNormalUpdate = 15
 	
-	if(Date.now() - lastUpdate < 1000 * secondsPerNormalUpdate)
-	{
+	if(Date.now() - lastUpdate < 1000 * secondsPerNormalUpdate) {
 		return false;
 	}
 	
@@ -75,7 +74,7 @@ client.addListener('message', (channel, user, message, self) => {
 		}
 	}
 
-	if (permission) && checkUpdateTime() {
+	if ((permission) && checkUpdateTime()) {
 		if (message.match(/!add/i) || message.match(/^\+1/i)) {
 			count++;
 			console.log(user['display-name'], message);
