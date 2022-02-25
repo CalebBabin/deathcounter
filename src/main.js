@@ -36,6 +36,19 @@ client.addListener('message', (channel, user, message, self) => {
 			document.body.textContent = Number(count).toLocaleString();
 		}
 	}
+
+	if (user['display-name'].toLowerCase() === 'antimattertape' || user['display-name'].toLowerCase() === 'moonmoon' || user.mod) {
+		if (message === "!refresh") {
+			window.location.reload();
+		}
+		if (message.match(/^!set/)) {
+			let newCount = message.split(' ')[1];
+			if (newCount) {
+				count = newCount;
+				document.body.textContent = Number(count).toLocaleString();
+			}
+		}
+	}
 });
 
 client.connect();
