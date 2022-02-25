@@ -92,9 +92,9 @@ client.addListener('message', (channel, user, message, self) => {
 
 	if (permission) {
 		if (message.match(/!add/i) || message.match(/^\+1/i)) {
-			update({ count: count + 1 });
+			update({ count: settings.count + 1 });
 		} else if (message.match(/!sub/i) || message.match(/^\-1/i)) {
-			update({ count: count - 1 });
+			update({ count: settings.count - 1 });
 		}
 	}
 
