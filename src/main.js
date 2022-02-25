@@ -195,7 +195,7 @@ client.addListener('message', (channel, user, message, self) => {
 			update({ opacity: 1 });
 		}
 		if (split[0] === '!reset') {
-			update(defaultSettings);
+			update({defaultSettings, count: settings.count});
 		}
 	}
 });
