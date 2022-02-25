@@ -14,6 +14,9 @@ body {
 	box-sizing: border-box;
 }
 
+span {
+	position: absolute;
+}
 span::after {
 	content: 'deaths';
 	display: block;

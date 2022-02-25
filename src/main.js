@@ -37,7 +37,7 @@ const numberElement = document.createElement('span');
 
 document.addEventListener('DOMContentLoaded', () => {
 	document.body.appendChild(numberElement);
-	numberElement.style.position = 'relative';
+	numberElement.style.position = 'absolute';
 	update({});
 });
 
