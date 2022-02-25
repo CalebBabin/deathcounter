@@ -28,10 +28,10 @@ document.body.textContent = Number(count).toLocaleString();
 client.addListener('message', (channel, user, message, self) => {
 	console.log(user.subscriber, message);
 	if (user.subscriber) {
-		if (message.toLowerCase() === '!add') {
+		if (message.match(/!add/i)) {
 			count++;
 			document.body.textContent = Number(count).toLocaleString();
-		} else if (message.toLowerCase() === '!sub') {
+		} else if (message.match(/!sub/i)) {
 			count--;
 			document.body.textContent = Number(count).toLocaleString();
 		}
