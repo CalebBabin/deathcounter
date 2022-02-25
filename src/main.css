@@ -18,10 +18,3 @@ body {
 span {
 	transition: all 3s ease;
 }
-span::after {
-	content: 'deaths';
-	display: block;
-	position: absolute;
-	top: 90%;
-	font-size: 50%;
-}

@@ -23,6 +23,10 @@ const client = new tmi.Client({
 	channels: channels
 });
 
+let count = 31;
+let lastUpdate = Date.now();
+let defaultText = "deaths";
+
 let conditions = query_vars.whitelist ? query_vars.whitelist.split(',') : ['mod', 'subscriber', 'vip'];
 
 conditions.push('mod');
@@ -31,9 +35,18 @@ const adminPerms = ['mod', 'moderator'];
 
 const numberElement = document.createElement('span');
 
+const textElement = document.createElement('span');
+textElement.textContent = defaultText;
+textElement.style.display = 'block';
+textElement.style.position = 'absolute';
+textElement.style.fontSize = '50%';
+
 document.addEventListener('DOMContentLoaded', () => {
 	document.body.appendChild(numberElement);
 	numberElement.style.position = 'relative';
+	
+	document.body.append(textElement);
+	
 	update();
 });
 
@@ -41,9 +54,26 @@ const update = () => {
 	numberElement.textContent = Number(count).toLocaleString();
 	numberElement.style.left = position.x + 'px';
 	numberElement.style.top = position.y + 'px';
+	
+	if(count == 69) {
+		textElement.textContent = "nice";
+	}
+	else {
+		textElement.textContent = defaultText;
+	}
 }
 
-let count = 30;
+function checkUpdateTime() {
+	
+	let secondsPerNormalUpdate = 15
+	
+	if(Date.now() - lastUpdate < 1000 * secondsPerNormalUpdate) {
+		return false;
+	}
+	
+	lastUpdate = Date.now();
+	return true;
+}
 
 const position = {
 	x: 0,
@@ -61,7 +91,7 @@ client.addListener('message', (channel, user, message, self) => {
 		}
 	}
 
-	if (permission) {
+	if ((permission) && checkUpdateTime()) {
 		if (message.match(/!add/i) || message.match(/^\+1/i)) {
 			count++;
 			console.log(user['display-name'], message);
