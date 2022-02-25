@@ -59,10 +59,10 @@ const update = (props) => {
 }
 
 const defaultSettings = {
-	x: 0,
-	y: 0,
+	x: 60,
+	y: 25,
 	count: 38,
-	fontSize: 30,
+	fontSize: 50,
 	opacity: 1,
 	color: '#ffffff',
 }
