@@ -43,7 +43,21 @@ const update = () => {
 	numberElement.style.top = position.y + 'px';
 }
 
+function checkUpdateTime() {
+	
+	let secondsPerNormalUpdate = 15
+	
+	if(Date.now() - lastUpdate < 1000 * secondsPerNormalUpdate)
+	{
+		return false;
+	}
+	
+	lastUpdate = Date.now();
+	return true;
+}
+
 let count = 30;
+let lastUpdate = Date.now();
 
 const position = {
 	x: 0,
@@ -61,7 +75,7 @@ client.addListener('message', (channel, user, message, self) => {
 		}
 	}
 
-	if (permission) {
+	if (permission) && checkUpdateTime() {
 		if (message.match(/!add/i) || message.match(/^\+1/i)) {
 			count++;
 			console.log(user['display-name'], message);
