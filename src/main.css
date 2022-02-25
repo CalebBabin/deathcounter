@@ -12,4 +12,5 @@ canvas {
 body {
 	background-color: black;
 	padding: 5px;
+	box-sizing: border-box;
 }
