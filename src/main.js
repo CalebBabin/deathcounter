@@ -33,7 +33,7 @@ const update = () => {
 	document.body.textContent = Number(count).toLocaleString();
 }
 
-let count = 0;
+let count = 24;
 update();
 client.addListener('message', (channel, user, message, self) => {
 
