@@ -12,5 +12,6 @@ canvas {
 body {
 	background-color: black;
 	padding: 5px;
+	font-family: 'Redressed', cursive;
 	box-sizing: border-box;
 }
