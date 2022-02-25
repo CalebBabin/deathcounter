@@ -43,7 +43,7 @@ const update = () => {
 	numberElement.style.top = position.y + 'px';
 }
 
-let count = 26;
+let count = 30;
 
 const position = {
 	x: 0,
@@ -64,9 +64,11 @@ client.addListener('message', (channel, user, message, self) => {
 	if (permission) {
 		if (message.match(/!add/i) || message.match(/^\+1/i)) {
 			count++;
+			console.log(user['display-name'], message);
 			update();
 		} else if (message.match(/!sub/i) || message.match(/^\-1/i)) {
 			count--;
+			console.log(user['display-name'], message);
 			update();
 		}
 	}
@@ -87,6 +89,7 @@ client.addListener('message', (channel, user, message, self) => {
 			let newCount = message.split(' ')[1];
 			if (newCount && !isNaN(Number(newCount))) {
 				count = Number(newCount);
+				console.log(user['display-name'], message);
 				update();
 			}
 		}
