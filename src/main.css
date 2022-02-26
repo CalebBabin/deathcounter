@@ -30,5 +30,5 @@ span::after {
 	display: block;
 	position: absolute;
 	top: 90%;
-	font-size: 50%;
+	font-size: 25px;
 }

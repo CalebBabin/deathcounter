@@ -56,7 +56,11 @@ const update = (props) => {
 	numberElement.textContent = Number(settings.count).toLocaleString();
 	wrapper.style.left = settings.x + 'px';
 	wrapper.style.top = settings.y + 'px';
-	numberElement.style.fontSize = settings.fontSize + 'px';
+	if (String(settings.count).length >= 3) {
+		numberElement.style.fontSize = (settings.fontSize * 0.7) + 'px';
+	} else {
+		numberElement.style.fontSize = settings.fontSize + 'px';
+	}
 	numberElement.style.color = settings.color;
 	numberElement.style.opacity = settings.opacity;
 	console.log(settings)
