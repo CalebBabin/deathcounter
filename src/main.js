@@ -76,6 +76,7 @@ const update = (props = {}) => {
 	subtitleElement.textElement.textContent = settings.smallText;
 	subtitleElement.style.fontSize = (settings.smallTextSize) + 'px';
 	document.body.style.fontFamily = settings.font;
+	document.body.style.fontWeight = settings.fontWeight;
 	console.log(settings)
 }
 
@@ -91,6 +92,7 @@ const defaultSettings = {
 	smallText: 'deaths',
 	smallTextSize: 25,
 	font: "'Redressed', cursive",
+	fontWeight: 'normal',
 }
 let settings = { ...defaultSettings };
 
