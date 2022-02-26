@@ -64,7 +64,7 @@ const update = (props) => {
 
 
 const defaultSettings = {
-	x: 60,
+	x: 65,
 	y: 25,
 	count: 38,
 	fontSize: 50,
