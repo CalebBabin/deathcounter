@@ -240,6 +240,7 @@ const animations = [
 	'animate__swing',
 	'animate__tada',
 	'animate__wobble',
+	'animate__flip',
 ]
 let lastAnimation = animations[0];
 
