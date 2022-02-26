@@ -69,7 +69,7 @@ const update = (props = {}) => {
 
 const defaultSettings = {
 	x: 94,
-	y: 72,
+	y: 67,
 	count: 90,
 	fontSize: 50,
 	opacity: 1,
