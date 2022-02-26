@@ -2,6 +2,8 @@
 
 An OBS browser source that ads a simple twitch-chat controlled death counter.
 
+Settings are saved in the "localStorage" api, so even if you close/re-open OBS, your settings and count should be the same.
+
 https://deathcounter.opl.io/?channels=moonmoon&whitelist=mod,subscriber,vip
 > Replace "moonmoon" with your twitch username.
 
