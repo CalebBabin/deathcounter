@@ -28,7 +28,5 @@ span::after {
 	width: 100%;
 	content: 'deaths';
 	display: block;
-	position: absolute;
-	top: 90%;
 	font-size: 25px;
 }
