@@ -24,10 +24,13 @@ div {
 span {
 	transform: translate(-50%, -50%);
 	text-shadow: 1px 1px 5px #000;
+	line-height: 1;
 }
 span::after {
 	width: 100%;
 	content: 'deaths';
 	display: block;
+	line-height: 1;
+	margin-top: -6px;
 	font-size: 25px;
 }
