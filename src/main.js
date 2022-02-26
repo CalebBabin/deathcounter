@@ -37,9 +37,18 @@ const whitelistedUsers = {
 const wrapper = document.createElement('div');
 wrapper.classList.add('animate__animated');
 const numberElement = document.createElement('span');
+const subtitleElement = document.createElement('span');
+
+const makeTextElement = (element) => {
+	element.textElement = document.createElement('cooltext');
+	element.appendChild(element.textElement);
+}
+makeTextElement(numberElement);
+makeTextElement(subtitleElement);
 
 document.addEventListener('DOMContentLoaded', () => {
 	document.body.appendChild(wrapper);
+	numberElement.appendChild(subtitleElement);
 	wrapper.appendChild(numberElement);
 	numberElement.style.position = 'absolute';
 	update({});
@@ -53,7 +62,7 @@ const update = (props = {}) => {
 		}
 	}
 	localStorage.setItem('settings', JSON.stringify(settings));
-	numberElement.textContent = Number(settings.count).toLocaleString();
+	numberElement.textElement.textContent = Number(settings.count).toLocaleString();
 	wrapper.style.left = settings.x + 'px';
 	wrapper.style.top = settings.y + 'px';
 	if (String(settings.count).length >= 3) {
@@ -63,6 +72,9 @@ const update = (props = {}) => {
 	}
 	numberElement.style.color = settings.color;
 	numberElement.style.opacity = settings.opacity;
+
+	subtitleElement.textElement.textContent = settings.smallText;
+	subtitleElement.style.fontSize = (settings.smallTextSize) + 'px';
 	console.log(settings)
 }
 
@@ -75,6 +87,8 @@ const defaultSettings = {
 	opacity: 1,
 	color: '#BBB3A3',
 	flashColor: '#ff0000',
+	smallText: 'deaths',
+	smallTextSize: 25,
 }
 let settings = { ...defaultSettings };
 
@@ -149,6 +163,24 @@ client.addListener('message', (channel, user, message, self) => {
 			if (newCount && !isNaN(Number(newCount))) {
 				flash();
 				update({ count: Number(newCount) });
+			} else {
+				if (defaultSettings.hasOwnProperty(split[1]) && split.length >= 3) {
+					if (typeof defaultSettings[split[1]] === 'number') {
+						const newNumber = Number(split[2]);
+						if (!isNaN(newNumber)) {
+							update({ [split[1]]: newNumber });
+						}
+					} else {
+						let value = "";
+						for (let index = 2; index < split.length; index++) {
+							const element = split[index];
+							value += element + " ";
+						}
+						value = value.trim();
+						
+						update({ [split[1]]: value });
+					}
+				}
 			}
 		}
 

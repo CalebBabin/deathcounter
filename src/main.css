@@ -17,19 +17,21 @@ body {
 	font-family: 'Redressed', cursive;
 	box-sizing: border-box;
 	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
 }
-div {
+body > div {
 	position: absolute;
 }
-span {
+div > span {
 	transform: translate(-50%, -50%);
 	text-shadow: 1px 1px 5px #000;
 	line-height: 1;
 }
-span::after {
-	width: 100%;
-	content: 'deaths';
+span > span {
+	min-width: 100%;
 	display: block;
+	text-align: center;
 	line-height: 1;
 	margin-top: -6px;
 	font-size: 25px;
