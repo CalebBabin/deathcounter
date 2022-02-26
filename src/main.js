@@ -65,7 +65,7 @@ const defaultSettings = {
 	count: 38,
 	fontSize: 50,
 	opacity: 1,
-	color: '#ffffff',
+	color: '#BBB3A3',
 	flashColor: '#ff0000',
 }
 let settings = { ...defaultSettings };
