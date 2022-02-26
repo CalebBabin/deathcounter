@@ -10,7 +10,7 @@ https://deathcounter.opl.io/?channels=moonmoon&whitelist=mod,subscriber,vip
 > Mods and the channel broadcaster always have full permissions. Whitelist only permits people to use `+1` and `-1` commands
 
 ---
-# twitch chat commands
+# Twitch Chat Commands
 ## +1
 
 Adds 1 to the count. If you want to do more than 1 at a time, use `!set 20` to set the count to 20.
