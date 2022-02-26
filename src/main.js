@@ -1,5 +1,6 @@
 import './main.css';
-import tmi from 'tmi.js'
+import 'animate.css';
+import tmi from 'tmi.js';
 
 // a default array of twitch channels to join
 let channels = ['moonmoon', 'antimattertape'];
@@ -33,10 +34,13 @@ const whitelistedUsers = {
 	'je_ek': true,
 }
 
+const wrapper = document.createElement('div');
+wrapper.classList.add('animate__animated');
 const numberElement = document.createElement('span');
 
 document.addEventListener('DOMContentLoaded', () => {
-	document.body.appendChild(numberElement);
+	document.body.appendChild(wrapper);
+	wrapper.appendChild(numberElement);
 	numberElement.style.position = 'absolute';
 	update({});
 });
@@ -50,8 +54,8 @@ const update = (props) => {
 	}
 	localStorage.setItem('settings', JSON.stringify(settings));
 	numberElement.textContent = Number(settings.count).toLocaleString();
-	numberElement.style.left = settings.x + 'px';
-	numberElement.style.top = settings.y + 'px';
+	wrapper.style.left = settings.x + 'px';
+	wrapper.style.top = settings.y + 'px';
 	numberElement.style.fontSize = settings.fontSize + 'px';
 	numberElement.style.color = settings.color;
 	numberElement.style.opacity = settings.opacity;
@@ -83,6 +87,7 @@ update({});
 
 const transitionDuration = 3000;
 const flashDuration = 500;
+wrapper.style.transition = `all ${transitionDuration}ms ease`;
 numberElement.style.transition = `all ${transitionDuration}ms ease`;
 
 let flashing = false;
@@ -195,9 +200,47 @@ client.addListener('message', (channel, user, message, self) => {
 			update({ opacity: 1 });
 		}
 		if (split[0] === '!reset') {
-			update({...defaultSettings, count: settings.count});
+			update({ ...defaultSettings, count: settings.count });
+			wrapper.setAttribute('class', 'animate__animated');
+		}
+
+		if (split[0] === '!animate') {
+			wrapper.classList.remove(lastAnimation);
+			let animation = animations[Math.floor(Math.random() * animations.length)];
+			if (split.length > 1) {
+				const keyword = split[1];
+				for (let index = 0; index < animations.length; index++) {
+					const element = animations[index];
+					if (element.includes(keyword)) {
+						animation = element;
+						break;
+					}
+				}
+			}
+			wrapper.classList.add(animation);
+			lastAnimation = animation;
 		}
 	}
 });
+
+
+const animations = [
+	'none',
+	'animate__hinge',
+	'animate__jackInTheBox',
+	'animate__animated',
+	'animate__bounce',
+	'animate__headShake',
+	'animate__heartBeat',
+	'animate__jello',
+	'animate__rubberBand',
+	'animate__shake',
+	'animate__shakeX',
+	'animate__shakeY',
+	'animate__swing',
+	'animate__tada',
+	'animate__wobble',
+]
+let lastAnimation = animations[0];
 
 client.connect();

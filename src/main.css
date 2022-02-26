@@ -7,15 +7,20 @@ canvas {
 	font-family: sans-serif;
 	color: #BBB3A3;
 }
+:root {
+	--animate-delay: 0s;
+	--animation-duration: 2s;
+}
 
 body {
 	padding: 5px;
 	font-family: 'Redressed', cursive;
 	box-sizing: border-box;
 }
-
-span {
+div {
 	position: absolute;
+}
+span {
 	text-shadow: 1px 1px 5px #000;
 }
 span::after {
