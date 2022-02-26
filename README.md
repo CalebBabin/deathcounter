@@ -8,14 +8,9 @@ Mods and the channel broadcaster always have full permissions. Whitelist only pe
 
 ---
 # twitch chat commands
-
-## !set {Number}
-
-example: "!set 6.9", "!set 200000"
-
 ## +1
 
-adds 1 to the count
+Adds 1 to the count. If you want to do more than 1 at a time, use `!set 20` to set the count to 20.
 
 ## -1
 
@@ -29,18 +24,6 @@ subtracts 1 from the count
 
 `"!moveTo 0 0"` moves to the top left corner, coordinates are absolute, not relative to current position like `!move` is
 
-## !size {Number}
-
-font size in pixels
-
-## !color {String}
-
-set the text color, you can put in things like "red", "blue", "black", or any valid CSS value, must be one word/no-spaces "#ABC123"
-
-## !flashColor {String}
-
-same as color, but changes the color the counter flashes to when incremented/decremented
-
 ## !hide
 
 fades out the counter over 3 seconds
@@ -52,3 +35,30 @@ fades it back in
 ## !reset
 
 resets to default settings and position
+
+## !set {Number}
+
+example: "!set 6.9", "!set 200000"
+
+
+## !set {Property} {Value}
+When you put text instead of a number for the first parameter, this will set the matching property of the counter to the value you enter, valid properties and their defaults are:
+```js
+{
+	x: 94,
+	y: 67,
+	count: 90,
+	fontSize: 50,
+	opacity: 1,
+	color: '#BBB3A3',
+	flashColor: '#ff0000',
+	smallText: 'deaths',
+	smallTextSize: 25,
+	font: "'Redressed', cursive",
+	fontWeight: 'normal',
+}
+```
+Examples:
+- !set color red
+- !set fontWeight bold
+- !set fontSize 300
