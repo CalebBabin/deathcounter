@@ -75,6 +75,7 @@ const update = (props = {}) => {
 
 	subtitleElement.textElement.textContent = settings.smallText;
 	subtitleElement.style.fontSize = (settings.smallTextSize) + 'px';
+	document.body.style.fontFamily = settings.font;
 	console.log(settings)
 }
 
@@ -89,6 +90,7 @@ const defaultSettings = {
 	flashColor: '#ff0000',
 	smallText: 'deaths',
 	smallTextSize: 25,
+	font: "'Redressed', cursive",
 }
 let settings = { ...defaultSettings };
 
