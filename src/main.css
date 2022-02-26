@@ -16,6 +16,7 @@ body {
 	padding: 5px;
 	font-family: 'Redressed', cursive;
 	box-sizing: border-box;
+	text-align: center;
 }
 div {
 	position: absolute;
@@ -24,6 +25,7 @@ span {
 	text-shadow: 1px 1px 5px #000;
 }
 span::after {
+	width: 100%;
 	content: 'deaths';
 	display: block;
 	position: absolute;
