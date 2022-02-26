@@ -2,9 +2,12 @@
 
 An OBS browser source that ads a simple twitch-chat controlled death counter.
 
-https://deathcounter.opl.io/?channels=moonmoon&whitelist=mod,subscriber,vip (replace "moonmoon" with your twitch username) (remove or add subscriber/vip from the user list to disable classes of users being able to adjust your counter)
+https://deathcounter.opl.io/?channels=moonmoon&whitelist=mod,subscriber,vip
+> Replace "moonmoon" with your twitch username.
 
-Mods and the channel broadcaster always have full permissions. Whitelist only permits people to use `+1` and `-1` commands
+> Remove or add subscriber/vip from the user list to disable classes of users being able to adjust your counter.
+> 
+> Mods and the channel broadcaster always have full permissions. Whitelist only permits people to use `+1` and `-1` commands
 
 ---
 # twitch chat commands
