@@ -16,6 +16,7 @@ body {
 
 span {
 	position: absolute;
+	text-shadow: 0px 0px 4px #000;
 }
 span::after {
 	content: 'deaths';
