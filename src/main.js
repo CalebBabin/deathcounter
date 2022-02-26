@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	update({});
 });
 
-const update = (props) => {
+const update = (props = {}) => {
 	console.log('updating', props)
 	for (const key in props) {
 		if (Object.hasOwnProperty.call(props, key)) {
@@ -68,9 +68,9 @@ const update = (props) => {
 
 
 const defaultSettings = {
-	x: 65,
-	y: 25,
-	count: 38,
+	x: 94,
+	y: 72,
+	count: 90,
 	fontSize: 50,
 	opacity: 1,
 	color: '#BBB3A3',
@@ -86,7 +86,7 @@ try {
 } catch (e) {
 	console.log(e);
 }
-update({});
+update();
 
 
 const transitionDuration = 3000;

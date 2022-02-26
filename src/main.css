@@ -22,6 +22,7 @@ div {
 	position: absolute;
 }
 span {
+	transform: translate(-50%, -50%);
 	text-shadow: 1px 1px 5px #000;
 }
 span::after {
