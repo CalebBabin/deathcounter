@@ -82,8 +82,8 @@ const update = (props = {}) => {
 
 
 const defaultSettings = {
-	x: 94,
-	y: 67,
+	x: 92,
+	y: 69,
 	count: 90,
 	fontSize: 50,
 	opacity: 1,
