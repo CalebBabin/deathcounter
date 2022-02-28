@@ -34,57 +34,42 @@ const whitelistedUsers = {
 	'je_ek': true,
 }
 
-const wrapper = document.createElement('div');
-wrapper.classList.add('animate__animated');
-const numberElement = document.createElement('span');
-const subtitleElement = document.createElement('span');
-
-const makeTextElement = (element) => {
-	element.textElement = document.createElement('cooltext');
-	element.appendChild(element.textElement);
-}
-makeTextElement(numberElement);
-makeTextElement(subtitleElement);
-
-document.addEventListener('DOMContentLoaded', () => {
-	document.body.appendChild(wrapper);
-	numberElement.appendChild(subtitleElement);
-	wrapper.appendChild(numberElement);
-	numberElement.style.position = 'absolute';
-	update({});
-});
-
-const update = (props = {}) => {
+const update = (props = {}, counter = 'default') => {
 	console.log('updating', props)
 	for (const key in props) {
 		if (Object.hasOwnProperty.call(props, key)) {
-			settings[key] = props[key];
+			counters[counter][key] = props[key];
 		}
 	}
-	localStorage.setItem('settings', JSON.stringify(settings));
-	numberElement.textElement.textContent = Number(settings.count).toLocaleString();
-	wrapper.style.left = settings.x + 'px';
-	wrapper.style.top = settings.y + 'px';
-	if (String(settings.count).length >= 3) {
-		numberElement.style.fontSize = (settings.fontSize * 0.7) + 'px';
-	} else {
-		numberElement.style.fontSize = settings.fontSize + 'px';
-	}
-	numberElement.style.color = settings.color;
-	numberElement.style.opacity = settings.opacity;
 
-	subtitleElement.textElement.textContent = settings.smallText;
-	subtitleElement.style.fontSize = (settings.smallTextSize) + 'px';
-	document.body.style.fontFamily = settings.font;
-	document.body.style.fontWeight = settings.fontWeight;
-	console.log(settings)
+	counterElements[counter].numberElement.textElement.textContent = Number(counters[counter].count).toLocaleString();
+	counterElements[counter].wrapper.style.left = counters[counter].x + 'px';
+	counterElements[counter].wrapper.style.top = counters[counter].y + 'px';
+	if (String(counters[counter].count).length >= 3) {
+		counterElements[counter].numberElement.style.fontSize = (counters[counter].fontSize * 0.7) + 'px';
+	} else {
+		counterElements[counter].numberElement.style.fontSize = counters[counter].fontSize + 'px';
+	}
+	counterElements[counter].numberElement.style.color = counters[counter].color;
+	counterElements[counter].numberElement.style.opacity = counters[counter].opacity;
+
+	counterElements[counter].subtitleElement.textElement.textContent = counters[counter].smallText;
+	counterElements[counter].subtitleElement.style.fontSize = (counters[counter].smallTextSize) + 'px';
+	counterElements[counter].wrapper.style.fontFamily = counters[counter].font;
+	counterElements[counter].wrapper.style.fontWeight = counters[counter].fontWeight;
+
+
+	counters[counter].name = counter.toLowerCase();
+	console.log(counters[counter])
+
+	localStorage.setItem('counter-' + counters[counter].name, JSON.stringify(counters[counter]));
 }
 
 
 const defaultSettings = {
 	x: 92,
 	y: 69,
-	count: 90,
+	count: 0,
 	fontSize: 50,
 	opacity: 1,
 	color: '#BBB3A3',
@@ -94,59 +79,127 @@ const defaultSettings = {
 	font: "'Redressed', cursive",
 	fontWeight: 'normal',
 }
-let settings = { ...defaultSettings };
+
+
+const counters = {};
+const counterElements = {};
+
+let counterList = [];
 
 try {
-	const storedSettings = JSON.parse(localStorage.getItem('settings'));
-	if (storedSettings) {
-		settings = { ...settings, ...storedSettings };
+	const storedCounters = JSON.parse(localStorage.getItem('counters'));
+	if (storedCounters && storedCounters.length > 0) {
+		for (let i = 0; i < storedCounters.length; i++) {
+			try {
+				const element = JSON.parse(localStorage.getItem('counter-' + storedCounters[i]));
+				counters[element.name] = { ...defaultSettings, ...element };
+				counterList.push(element.name);
+			} catch (e) {
+				console.error(e);
+			}
+		}
 	}
 } catch (e) {
 	console.log(e);
 }
-update();
-
+try {
+	// load in the first "default" counter if it's using the old format
+	if (!Object.hasOwnProperty.call(counters, 'default')) {
+		const storedSettings = JSON.parse(localStorage.getItem('settings'));
+		if (storedSettings) {
+			counters['default'] = { ...defaultSettings, ...storedSettings };
+		}
+	}
+} catch (e) {
+	console.log(e);
+}
 
 const transitionDuration = 3000;
 const flashDuration = 500;
-wrapper.style.transition = `all ${transitionDuration}ms ease`;
-numberElement.style.transition = `all ${transitionDuration}ms ease`;
-
 let flashing = false;
-const flash = () => {
+
+const createCounter = (settings = {}, key = 'default') => {
+	counters[key] = { ...defaultSettings, ...settings };
+	const elements = counterElements[key] = {};
+
+	elements.wrapper = document.createElement('div');
+	elements.wrapper.classList.add('animate__animated');
+	elements.numberElement = document.createElement('span');
+	elements.subtitleElement = document.createElement('span');
+
+	const makeTextElement = (element) => {
+		element.textElement = document.createElement('cooltext');
+		element.appendChild(element.textElement);
+	}
+	makeTextElement(elements.numberElement);
+	makeTextElement(elements.subtitleElement);
+
+	elements.wrapper.style.transition = `all ${transitionDuration}ms ease`;
+	elements.numberElement.style.transition = `all ${transitionDuration}ms ease`;
+
+	window.requestAnimationFrame(() => {
+		document.body.appendChild(elements.wrapper);
+		elements.numberElement.appendChild(elements.subtitleElement);
+		elements.wrapper.appendChild(elements.numberElement);
+		elements.numberElement.style.position = 'absolute';
+		update({}, key);
+	});
+
+	if (counterList.indexOf(key) === -1) {
+		counterList.push(key);
+		localStorage.setItem('counters', JSON.stringify(counterList));
+	}
+};
+
+const removeCounter = (key) => {
+	document.body.removeChild(counterElements[key].wrapper);
+	counterList.splice(counterList.indexOf(key), 1);
+	localStorage.setItem('counters', JSON.stringify(counterList));
+	delete counters[key];
+	delete counterElements[key];
+}
+
+for (const key in counters) {
+	if (Object.hasOwnProperty.call(counters, key)) {
+		createCounter(counters[key], key);
+	}
+}
+
+
+const flash = (counter = 'default') => {
 	if (flashing) return;
-	numberElement.style.transition = `all ${flashDuration}ms ease-out`;
+	counterElements[counter].numberElement.style.transition = `all ${flashDuration}ms ease-out`;
 	flashing = true;
 	window.requestAnimationFrame(() => {
-		numberElement.style.color = settings.flashColor;
+		counterElements[counter].numberElement.style.color = counters[counter].flashColor;
 	})
 	setTimeout(() => {
 		flashing = false;
-		numberElement.style.transition = `all ${transitionDuration}ms ease`;
+		counterElements[counter].numberElement.style.transition = `all ${transitionDuration}ms ease`;
 		window.requestAnimationFrame(() => {
-			numberElement.style.color = settings.color;
+			counterElements[counter].numberElement.style.color = counters[counter].color;
 		})
 	}, flashDuration);
 }
 
-client.addListener('message', (channel, user, message, self) => {
+const messageListener = (channel, user, message, self) => {
 	const split = message.split(' ');
+
+	let counter = 'default';
+	if (split.length > 1) {
+		let temp = split[0].toLowerCase();
+		if (Object.hasOwnProperty.call(counters, temp)) {
+			counter = temp;
+			split.splice(0, 1);
+			console.log('detected counter', counter);
+		}
+	}
 
 	let permission = false;
 	for (let index = 0; index < conditions.length; index++) {
 		if (user[conditions[index]] || (user.badges && user.badges[conditions[index]])) {
 			permission = true;
 			break;
-		}
-	}
-
-	if (permission) {
-		if (message.match(/!add/i) || message.match(/^\+1/i)) {
-			flash();
-			update({ count: settings.count + 1 });
-		} else if (message.match(/!sub/i) || message.match(/^\-1/i)) {
-			flash();
-			update({ count: settings.count - 1 });
 		}
 	}
 
@@ -158,6 +211,16 @@ client.addListener('message', (channel, user, message, self) => {
 		}
 	}
 
+	if (permission || adminPermission || whitelistedUsers[user['display-name'].toLowerCase()]) {
+		if (split[0].match(/^!add/i) || split[0].match(/^\+1/i)) {
+			flash(counter);
+			update({ count: counters[counter].count + 1 }, counter);
+		} else if (split[0].match(/^!sub/i) || split[0].match(/^\-1/i)) {
+			flash(counter);
+			update({ count: counters[counter].count - 1 }, counter);
+		}
+	}
+
 	if (whitelistedUsers[user['display-name'].toLowerCase()] || adminPermission) {
 		if (message === "!refresh") {
 			window.location.reload();
@@ -166,13 +229,13 @@ client.addListener('message', (channel, user, message, self) => {
 			let newCount = split[1];
 			if (newCount && !isNaN(Number(newCount))) {
 				flash();
-				update({ count: Number(newCount) });
+				update({ count: Number(newCount) }, counter);
 			} else {
 				if (defaultSettings.hasOwnProperty(split[1]) && split.length >= 3) {
 					if (typeof defaultSettings[split[1]] === 'number') {
 						const newNumber = Number(split[2]);
 						if (!isNaN(newNumber)) {
-							update({ [split[1]]: newNumber });
+							update({ [split[1]]: newNumber }, counter);
 						}
 					} else {
 						let value = "";
@@ -181,8 +244,8 @@ client.addListener('message', (channel, user, message, self) => {
 							value += element + " ";
 						}
 						value = value.trim();
-						
-						update({ [split[1]]: value });
+
+						update({ [split[1]]: value }, counter);
 					}
 				}
 			}
@@ -195,16 +258,16 @@ client.addListener('message', (channel, user, message, self) => {
 				if (distance && !isNaN(Number(distance))) {
 					switch (direction) {
 						case 'up':
-							update({ y: settings.y - Number(distance) });
+							update({ y: counters[counter].y - Number(distance) }, counter);
 							break;
 						case 'down':
-							update({ y: settings.y + Number(distance) });
+							update({ y: counters[counter].y + Number(distance) }, counter);
 							break;
 						case 'left':
-							update({ x: settings.x - Number(distance) });
+							update({ x: counters[counter].x - Number(distance) }, counter);
 							break;
 						case 'right':
-							update({ x: settings.x + Number(distance) });
+							update({ x: counters[counter].x + Number(distance) }, counter);
 							break;
 					}
 				}
@@ -216,36 +279,36 @@ client.addListener('message', (channel, user, message, self) => {
 				let x = split[1];
 				let y = split[2];
 				if (x && !isNaN(Number(x)) && y && !isNaN(Number(y))) {
-					update({ x: Number(x), y: Number(y) });
+					update({ x: Number(x), y: Number(y) }, counter);
 				}
 			}
 		}
 
 		if (split[0] === '!color' && split.length >= 2) {
-			update({ color: split[1] });
+			update({ color: split[1] }, counter);
 		}
 		if (split[0] === '!flashColor' && split.length >= 2) {
-			update({ flashColor: split[1] });
+			update({ flashColor: split[1] }, counter);
 		}
 		if (split[0] === '!size' && split.length >= 2) {
 			const size = split[1];
 			if (size && !isNaN(Number(size))) {
-				update({ fontSize: Number(size) });
+				update({ fontSize: Number(size) }, counter);
 			}
 		}
 		if (split[0] === '!hide') {
-			update({ opacity: 0 });
+			update({ opacity: 0 }, counter);
 		}
 		if (split[0] === '!show') {
-			update({ opacity: 1 });
+			update({ opacity: 1 }, counter);
 		}
 		if (split[0] === '!reset') {
-			update({ ...defaultSettings, count: settings.count });
-			wrapper.setAttribute('class', 'animate__animated');
+			update({ ...defaultSettings, count: counters[counter].count }, counter);
+			counterElements[counter].wrapper.setAttribute('class', 'animate__animated');
 		}
 
 		if (split[0] === '!animate') {
-			wrapper.classList.remove(lastAnimation);
+			counterElements[counter].wrapper.classList.remove(lastAnimation);
 			let animation = animations[Math.floor(Math.random() * animations.length)];
 			if (split.length > 1) {
 				const keyword = split[1];
@@ -257,11 +320,40 @@ client.addListener('message', (channel, user, message, self) => {
 					}
 				}
 			}
-			wrapper.classList.add(animation);
+			counterElements[counter].wrapper.classList.add(animation);
 			lastAnimation = animation;
 		}
+
+
+		if (split[0] === '!addCounter') {
+			if (split.length >= 2) {
+				const counter = split[1];
+				if (counter && !Object.hasOwnProperty.call(counters, counter)) {
+					let settings = {};
+					try {
+						let string = "";
+						for (let index = 2; index < split.length; index++) {
+							string += split[index] + " ";
+						}
+						settings = JSON.parse(string);
+					} catch (e) { }
+					createCounter(settings, counter);
+				}
+			}
+		}
+
+		if (split[0] === '!removeCounter') {
+			if (split.length >= 2) {
+				const counter = split[1];
+				if (counter && Object.hasOwnProperty.call(counters, counter)) {
+					removeCounter(counter);
+				}
+			}
+		}
 	}
-});
+};
+window.messageListener = messageListener;
+client.addListener('message', messageListener);
 
 
 const animations = [
