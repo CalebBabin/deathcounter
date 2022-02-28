@@ -39,7 +39,7 @@ fades it back in
 
 ## !reset
 
-resets to default settings and position
+resets everything but the current count to default.
 
 ## !set {Number}
 
