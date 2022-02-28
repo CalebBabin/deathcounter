@@ -81,7 +81,7 @@ const defaultSettings = {
 }
 
 
-const counters = {};
+const counters = { default: { ...defaultSettings } };
 const counterElements = {};
 
 let counterList = [];
@@ -186,8 +186,8 @@ const messageListener = (channel, user, message, self) => {
 	const split = message.split(' ');
 
 	let counter = 'default';
-	if (split.length > 1) {
-		let temp = split[0].toLowerCase();
+	if (split.length > 1 && split[0].substr(0, 1) === '?') {
+		let temp = split[0].toLowerCase().substr(1);
 		if (Object.hasOwnProperty.call(counters, temp)) {
 			counter = temp;
 			split.splice(0, 1);
@@ -212,10 +212,10 @@ const messageListener = (channel, user, message, self) => {
 	}
 
 	if (permission || adminPermission || whitelistedUsers[user['display-name'].toLowerCase()]) {
-		if (split[0].match(/^!add/i) || split[0].match(/^\+1/i)) {
+		if (split[0] === '!add' || split[0].match(/^\+1/i)) {
 			flash(counter);
 			update({ count: counters[counter].count + 1 }, counter);
-		} else if (split[0].match(/^!sub/i) || split[0].match(/^\-1/i)) {
+		} else if (split[0] === '!sub' || split[0].match(/^\-1/i)) {
 			flash(counter);
 			update({ count: counters[counter].count - 1 }, counter);
 		}
