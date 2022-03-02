@@ -57,6 +57,7 @@ const update = (props = {}, counter = 'default') => {
 	counterElements[counter].subtitleElement.style.fontSize = (counters[counter].smallTextSize) + 'px';
 	counterElements[counter].wrapper.style.fontFamily = counters[counter].font;
 	counterElements[counter].wrapper.style.fontWeight = counters[counter].fontWeight;
+	counterElements[counter].wrapper.style.textShadow = counters[counter].shadow;
 
 
 	counters[counter].name = counter.toLowerCase();
@@ -78,6 +79,7 @@ const defaultSettings = {
 	smallTextSize: 25,
 	font: "'Redressed', cursive",
 	fontWeight: 'normal',
+	shadow: '0px 0px 5px #000',
 }
 
 
