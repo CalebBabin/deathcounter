@@ -186,6 +186,7 @@ const flash = (counter = 'default') => {
 
 const messageListener = (channel, user, message, self) => {
 	const split = message.split(' ');
+	let counter = 'default';
 
 	let permission = false;
 	for (let index = 0; index < conditions.length; index++) {
@@ -205,7 +206,6 @@ const messageListener = (channel, user, message, self) => {
 
 	if (permission || adminPermission || whitelistedUsers[user['display-name'].toLowerCase()]) {
 
-		let counter = 'default';
 		if (split.length > 1) {
 			let temp = split[0].toLowerCase();
 			if (temp.substr(0, 1) === '?') temp = temp.substr(1);
