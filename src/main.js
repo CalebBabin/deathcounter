@@ -187,16 +187,6 @@ const flash = (counter = 'default') => {
 const messageListener = (channel, user, message, self) => {
 	const split = message.split(' ');
 
-	let counter = 'default';
-	if (split.length > 1 && split[0].substr(0, 1) === '?') {
-		let temp = split[0].toLowerCase().substr(1);
-		if (Object.hasOwnProperty.call(counters, temp)) {
-			counter = temp;
-			split.splice(0, 1);
-			console.log('detected counter', counter);
-		}
-	}
-
 	let permission = false;
 	for (let index = 0; index < conditions.length; index++) {
 		if (user[conditions[index]] || (user.badges && user.badges[conditions[index]])) {
@@ -214,6 +204,19 @@ const messageListener = (channel, user, message, self) => {
 	}
 
 	if (permission || adminPermission || whitelistedUsers[user['display-name'].toLowerCase()]) {
+
+		let counter = 'default';
+		if (split.length > 1) {
+			let temp = split[0].toLowerCase();
+			if (temp.substr(0, 1) === '?') temp = temp.substr(1);
+
+			if (Object.hasOwnProperty.call(counters, temp)) {
+				counter = temp;
+				split.splice(0, 1);
+				console.log('detected counter', counter);
+			}
+		}
+
 		if (split[0] === '!add' || split[0].match(/^\+1/i)) {
 			flash(counter);
 			update({ count: counters[counter].count + 1 }, counter);
