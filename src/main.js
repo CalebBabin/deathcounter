@@ -225,12 +225,9 @@ const messageListener = (channel, user, message, self) => {
 			}
 		}
 
-		if (split[0] === '!add' || split[0].match(/^\+1/i)) {
+		if (split[0].match(/^[+ -]?[0-9]{1,3}([.][0-9]{1,2})?$/)) {
 			flash(counter);
-			update({ count: counters[counter].count + 1 }, counter);
-		} else if (split[0] === '!sub' || split[0].match(/^\-1/i)) {
-			flash(counter);
-			update({ count: counters[counter].count - 1 }, counter);
+			update({ count: counters[counter].count + Number(split[0]) }, counter);
 		}
 	}
 
