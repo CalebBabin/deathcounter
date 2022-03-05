@@ -42,7 +42,11 @@ const update = (props = {}, counter = 'default') => {
 		}
 	}
 
-	counterElements[counter].numberElement.textElement.textContent = Number(counters[counter].count).toLocaleString();
+	let number = counters[counter].count;
+	if (counter.match(/\-dup$/)) {
+		number = counters[counter.replace('-dup', '')].count;
+	}
+	counterElements[counter].numberElement.textElement.textContent = Number(number).toLocaleString();
 	counterElements[counter].wrapper.style.left = counters[counter].x + 'px';
 	counterElements[counter].wrapper.style.top = counters[counter].y + 'px';
 	if (String(counters[counter].count).length >= 3) {
@@ -154,10 +158,10 @@ const createCounter = (settings = {}, key = 'default') => {
 };
 
 const removeCounter = (key) => {
+	delete counters[key];
+	localStorage.setItem('counters', JSON.stringify(counterList));
 	document.body.removeChild(counterElements[key].wrapper);
 	counterList.splice(counterList.indexOf(key), 1);
-	localStorage.setItem('counters', JSON.stringify(counterList));
-	delete counters[key];
 	delete counterElements[key];
 }
 
