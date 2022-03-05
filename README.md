@@ -13,13 +13,19 @@ https://deathcounter.opl.io/?channels=moonmoon&whitelist=mod,subscriber,vip
 
 ---
 # Twitch Chat Commands
-## +1
+## +1 and -1
 
-Adds 1 to the count. If you want to do more than 1 at a time, use `!set 20` to set the count to 20.
+This can be any valid number, so `+5`, and `-2.5` work as well. If the counter gets messed up or you want to set it so something specific, someone with admin permissions will need to use `!set`.
 
-## -1
+examples:
+```
++1
+-1
++5
+-12.2
++0.6
+```
 
-subtracts 1 from the count
 
 ## !move {Direction} {Number}
 
@@ -67,3 +73,19 @@ Examples:
 - !set color red
 - !set fontWeight bold
 - !set fontSize 300
+
+
+## !addCounter {Name} {JSON Encoded Settings}
+Adds a new counter, will default to original settings if no new ones are passed in.
+
+Example:
+```
+!addCounter example {"smallText":"Example Counter"}
+```
+
+Modifying a specific counter instead of the default is as simple as starting your message with the counters name
+```
+example !set color red
+example +1
+example -5
+```
