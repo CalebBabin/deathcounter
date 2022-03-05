@@ -68,6 +68,10 @@ const update = (props = {}, counter = 'default') => {
 	console.log(counters[counter])
 
 	localStorage.setItem('counter-' + counters[counter].name, JSON.stringify(counters[counter]));
+
+	if (counters[counter + '-dup']) {
+		update({}, counter + '-dup');
+	}
 }
 
 
