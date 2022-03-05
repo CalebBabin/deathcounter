@@ -225,7 +225,7 @@ const messageListener = (channel, user, message, self) => {
 			}
 		}
 
-		if (split[0].match(/[-+]?[0-9]{1,3}(\.[0-9]{1,2})?/) && Number(split[0]) !== NaN) {
+		if (split[0].match(/[-+]?[0-9]{1,3}(\.[0-9]{1,2})?/) && Number(split[0]) !== NaN && counters[counter].count + Number(split[0]) !== NaN) {
 			flash(counter);
 			update({ count: counters[counter].count + Number(split[0]) }, counter);
 		}
