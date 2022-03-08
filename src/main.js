@@ -28,6 +28,9 @@ let conditions = query_vars.whitelist ? query_vars.whitelist.split(',') : ['mod'
 conditions.push('mod', 'broadcaster');
 
 const adminPerms = ['mod', 'moderator'];
+const softWhitelist = {
+	"wediditreddit4head": true
+}
 const whitelistedUsers = {
 	'antimattertape': true,
 	'moonmoon': true,
@@ -212,7 +215,7 @@ const messageListener = (channel, user, message, self) => {
 		}
 	}
 
-	if (permission || adminPermission || whitelistedUsers[user['display-name'].toLowerCase()]) {
+	if (permission || adminPermission || softWhitelist[user['display-name'].toLowerCase()] || whitelistedUsers[user['display-name'].toLowerCase()]) {
 
 		if (split.length > 1) {
 			let temp = split[0].toLowerCase();
