@@ -88,6 +88,11 @@ const update = (props = {}, counter = 'default') => {
 	if (counters[counter + '-dup']) {
 		update({}, counter + '-dup');
 	}
+
+	if (window.hasOwnProperty('twemoji')) {
+		twemoji.parse(counterElements[counter].numberElement.textElement);
+		twemoji.parse(counterElements[counter].subtitleElement.textElement);
+	}
 }
 
 

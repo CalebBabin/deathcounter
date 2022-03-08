@@ -36,3 +36,9 @@ span > span {
 	margin-top: -6px;
 	font-size: 25px;
 }
+
+cooltext > img {
+	display: inline-block;
+	vertical-align: middle;
+	width: 1ch;
+}
