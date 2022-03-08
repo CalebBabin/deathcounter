@@ -71,7 +71,7 @@ const update = (props = {}, counter = 'default') => {
 		counterElements[counter].numberElement.style.fontSize = counters[counter].fontSize + 'px';
 	}
 	counterElements[counter].numberElement.style.color = counters[counter].color;
-	counterElements[counter].numberElement.style.opacity = counters[counter].opacity;
+	counterElements[counter].numberElement.style.opacity = counters[counter].hidden ? 0 : counters[counter].opacity;
 
 	counterElements[counter].subtitleElement.textElement.textContent = counters[counter].smallText;
 	counterElements[counter].subtitleElement.style.fontSize = (counters[counter].smallTextSize) + 'px';
@@ -107,7 +107,9 @@ const defaultSettings = {
 	y: 69,
 	count: 0,
 	fontSize: 50,
+	hidden: false,
 	opacity: 1,
+	flashOpacity: 1,
 	color: '#BBB3A3',
 	flashColor: '#ff0000',
 	smallText: 'deaths',
@@ -209,11 +211,13 @@ const flash = (counter = 'default') => {
 	flashing = true;
 	window.requestAnimationFrame(() => {
 		counterElements[counter].numberElement.style.color = counters[counter].flashColor;
+		counterElements[counter].numberElement.style.opacity = counters[counter].flashOpacity;
 	})
 	setTimeout(() => {
 		flashing = false;
 		counterElements[counter].numberElement.style.transition = `all ${transitionDuration}ms ease`;
 		window.requestAnimationFrame(() => {
+			counterElements[counter].numberElement.style.opacity = counters[counter].opacity;
 			counterElements[counter].numberElement.style.color = counters[counter].color;
 		})
 	}, flashDuration);
@@ -265,7 +269,6 @@ const messageListener = (channel, user, message, self) => {
 		if (split[0] === "!set") {
 			let newCount = split[1];
 			if (newCount && !isNaN(Number(newCount))) {
-				flash();
 				update({ count: Number(newCount) }, counter);
 			} else {
 				if (defaultSettings.hasOwnProperty(split[1]) && split.length >= 3) {
@@ -334,10 +337,10 @@ const messageListener = (channel, user, message, self) => {
 			}
 		}
 		if (split[0] === '!hide') {
-			update({ opacity: 0 }, counter);
+			update({ hidden: true }, counter);
 		}
 		if (split[0] === '!show') {
-			update({ opacity: 1 }, counter);
+			update({ hidden: false }, counter);
 		}
 		if (split[0] === '!reset') {
 			update({ ...defaultSettings, count: counters[counter].count }, counter);
