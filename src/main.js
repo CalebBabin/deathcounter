@@ -90,11 +90,17 @@ const update = (props = {}, counter = 'default') => {
 	}
 
 	if (window.hasOwnProperty('twemoji')) {
-		twemoji.parse(counterElements[counter].numberElement.textElement);
-		twemoji.parse(counterElements[counter].subtitleElement.textElement);
+		twemoji.parse(counterElements[counter].subtitleElement.textElement, {
+			folder: 'svg',
+			ext: '.svg',
+		});
+		const ghosts = counterElements[counter].subtitleElement.textElement.querySelectorAll('img[alt="👻"]');
+		for (let i = 0; i < ghosts.length; i++) {
+			ghosts[i].setAttribute('src', ghostURL)
+		}
 	}
 }
-
+import ghostURL from './ghost.svg';
 
 const defaultSettings = {
 	x: 92,
