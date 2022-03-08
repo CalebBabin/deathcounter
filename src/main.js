@@ -78,6 +78,7 @@ const update = (props = {}, counter = 'default') => {
 	counterElements[counter].wrapper.style.fontFamily = counters[counter].font;
 	counterElements[counter].wrapper.style.fontWeight = counters[counter].fontWeight;
 	counterElements[counter].wrapper.style.textShadow = counters[counter].shadow;
+	counterElements[counter].wrapper.style.filter = counters[counter].filter;
 
 
 	counters[counter].name = counter.toLowerCase();
@@ -117,6 +118,7 @@ const defaultSettings = {
 	font: "'Redressed', cursive",
 	fontWeight: 'normal',
 	shadow: '0px 0px 5px #000',
+	filter: 'none',
 }
 
 
