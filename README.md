@@ -89,3 +89,12 @@ example !set color red
 example +1
 example -5
 ```
+
+## !permituser {username}
+Allows a specific user to access only the +/- command
+
+Example:
+```
+!permituser moonmoon
+!removeuser moonmoon
+```
