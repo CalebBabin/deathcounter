@@ -28,9 +28,22 @@ let conditions = query_vars.whitelist ? query_vars.whitelist.split(',') : ['mod'
 conditions.push('mod', 'broadcaster');
 
 const adminPerms = ['mod', 'moderator'];
-const softWhitelist = {
-	"wediditreddit4head": true
+const softWhitelist = {}
+try {
+	let input = JSON.parse(localStorage.getItem('whitelist'));
+	for (const key in input) {
+		if (Object.hasOwnProperty.call(input, key)) {
+			softWhitelist[key] = input[key];
+		}
+	}
+} catch (e) { console.log(e) }
+
+const saveWhitelist = () => {
+	try {
+		localStorage.setItem('whitelist', JSON.stringify(softWhitelist));
+	} catch (e) { console.log(e) }
 }
+
 const whitelistedUsers = {
 	'antimattertape': true,
 	'moonmoon': true,
@@ -337,6 +350,20 @@ const messageListener = (channel, user, message, self) => {
 			lastAnimation = animation;
 		}
 
+		if (split[0] === '!permituser' && split.length >= 2) {
+			const username = split[1];
+			if (username) {
+				softWhitelist[username.toLowerCase()] = true;
+				saveWhitelist();
+			}
+		}
+		if (split[0] === '!removeuser' && split.length >= 2) {
+			const username = split[1];
+			if (username) {
+				delete softWhitelist[username.toLowerCase()];
+				saveWhitelist();
+			}
+		}
 
 		if (split[0] === '!addCounter') {
 			if (split.length >= 2) {
