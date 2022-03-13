@@ -27,7 +27,7 @@ const client = new tmi.Client({
 let conditions = query_vars.whitelist ? query_vars.whitelist.split(',') : ['mod', 'subscriber', 'vip'];
 conditions.push('mod', 'broadcaster');
 
-const adminPerms = ['mod', 'moderator'];
+const adminPerms = ['mod', 'moderator', 'broadcaster'];
 const softWhitelist = {}
 try {
 	let input = JSON.parse(localStorage.getItem('whitelist'));
