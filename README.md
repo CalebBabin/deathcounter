@@ -98,3 +98,10 @@ Example:
 !permituser moonmoon
 !removeuser moonmoon
 ```
+
+## !permitclass {arg1 arg2 arg3...}
+Temporarily (until refreshed) allows a chat badge to adjust counter, similar to `permituser`
+Example:
+```
+!permitclass vip subscriber
+```

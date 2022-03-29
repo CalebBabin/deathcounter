@@ -373,6 +373,9 @@ const messageListener = (channel, user, message, self) => {
 				saveWhitelist();
 			}
 		}
+		if (split[0] === '!permitclass' && split.length >= 2) {
+			conditions.push(...split.splice(1));
+		}
 		if (split[0] === '!removeuser' && split.length >= 2) {
 			const username = split[1];
 			if (username) {
