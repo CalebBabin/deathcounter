@@ -445,7 +445,7 @@ setInterval(() => {
 			counterElements[countdownKey].numberElement.textContent = counters[countdownKey].count;
 		}
 	}
-}, 100)
+}, 1000)
 
 const animations = [
 	'none',
