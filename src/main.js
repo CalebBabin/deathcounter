@@ -432,6 +432,7 @@ const messageListener = (channel, user, message, self) => {
 						number = 100;
 					}
 					counters[counter].count = number;
+					counters[counter].startingCount = number;
 					counterElements[counter].numberElement.textElement.textContent = number;
 					if (countdowns.indexOf(counter) >= 0) countdowns.splice(countdowns.indexOf(counter), 1);
 				}
