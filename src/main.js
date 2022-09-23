@@ -410,7 +410,12 @@ const messageListener = (channel, user, message, self) => {
 			}
 		}
 		if (split[0] === '!countdown') {
-			const counter = split[split.length - 1];
+			let counter = split[split.length - 1];
+			if (split.length === 2) {
+				if (counters['countdown']) counter = 'countdown';
+				else counter = 'default';
+
+			}
 			if (split.length >= 2) {
 				if (
 					counter &&
