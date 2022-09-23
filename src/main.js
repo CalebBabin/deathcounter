@@ -428,7 +428,7 @@ const messageListener = (channel, user, message, self) => {
 
 				if (split[1] === 'restart' && countdowns.indexOf(counter) >= 0) {
 					counters[counter].count = Number(counters[counter].startingCount);
-					counterElements[counter].numberElement.textContent = counters[counter].count;
+					counterElements[counter].numberElement.textElement.textContent = counters[counter].count;
 				}
 				if (split[1] === 'stop') {
 					if (countdowns.indexOf(counter) >= 0) countdowns.splice(countdowns.indexOf(counter), 1);
@@ -448,7 +448,7 @@ setInterval(() => {
 		if (countdownKey && counters[countdownKey]) {
 			console.log(counterElements[countdownKey]);
 			counters[countdownKey].count--;
-			counterElements[countdownKey].numberElement.textContent = counters[countdownKey].count;
+			counterElements[countdownKey].numberElement.textElement.textContent = counters[countdownKey].count;
 		}
 	}
 }, 1000)
