@@ -446,7 +446,6 @@ setInterval(() => {
 	for (let index = 0; index < countdowns.length; index++) {
 		const countdownKey = countdowns[index];
 		if (countdownKey && counters[countdownKey]) {
-			console.log(counterElements[countdownKey]);
 			counters[countdownKey].count--;
 			counterElements[countdownKey].numberElement.textElement.textContent = counters[countdownKey].count;
 		}
