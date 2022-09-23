@@ -409,11 +409,43 @@ const messageListener = (channel, user, message, self) => {
 				}
 			}
 		}
+		if (split[0] === '!countdown') {
+			const counter = split[split.length - 1];
+			if (split.length >= 2) {
+				if (
+					counter &&
+					Object.hasOwnProperty.call(counters, counter) &&
+					countdowns.indexOf(counter) < 0
+				) {
+					countdowns.push(counter);
+					counters[counter].startingCount = Number(counters[counter].count);
+				}
+
+				if (split[1] === 'restart' && countdowns.indexOf(counter) >= 0) {
+					counters[counter].count = Number(counters[counter].startingCount);
+					counterElements[countdownKey].numberElement.textContent = counters[countdownKey].count;
+				}
+				if (split[1] === 'stop') {
+					if (countdowns.indexOf(counter) >= 0) countdowns.splice(countdowns.indexOf(counter), 1);
+				}
+			}
+		}
 	}
 };
 window.messageListener = messageListener;
 client.addListener('message', messageListener);
 
+
+const countdowns = [];
+setInterval(() => {
+	for (let index = 0; index < countdowns.length; index++) {
+		const countdownKey = countdowns[index];
+		if (counters[countdownKey]) {
+			counters[countdownKey].count--;
+			counterElements[countdownKey].numberElement.textContent = counters[countdownKey].count;
+		}
+	}
+}, 100)
 
 const animations = [
 	'none',
