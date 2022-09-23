@@ -105,3 +105,15 @@ Example:
 ```
 !permitclass vip subscriber
 ```
+
+
+
+## Countdowns
+If you have a counter named 'countdown', you can have it automatically tick down by "1" every second, counter stops itself on refresh and resets to whatever the last value was.
+
+```js
+!countdown start
+!countdown stop
+!countdown restart //sets to last set value and starts it again
+!countdown set 100
+```
