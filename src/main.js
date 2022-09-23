@@ -410,12 +410,13 @@ const messageListener = (channel, user, message, self) => {
 			}
 		}
 		if (split[0] === '!countdown') {
-			let counter = split[split.length - 1];
+
+			let counter = 'countdown';/*split[split.length - 1];
 			if (split.length === 2) {
 				if (counters['countdown']) counter = 'countdown';
 				else counter = 'default';
+			}*/
 
-			}
 			if (split.length >= 2) {
 				if (
 					counter &&
@@ -424,6 +425,15 @@ const messageListener = (channel, user, message, self) => {
 				) {
 					countdowns.push(counter);
 					counters[counter].startingCount = Number(counters[counter].count);
+				}
+				if (split[1] === 'set' && countdowns.indexOf(counter) >= 0) {
+					let number = Number(split[2]);
+					if (Number.isNaN(number)) {
+						number = 100;
+					}
+					counters[counter].count = number;
+					counterElements[counter].numberElement.textElement.textContent = number;
+					if (countdowns.indexOf(counter) >= 0) countdowns.splice(countdowns.indexOf(counter), 1);
 				}
 
 				if (split[1] === 'restart' && countdowns.indexOf(counter) >= 0) {
