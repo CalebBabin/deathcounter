@@ -94,6 +94,7 @@ const update = (props = {}, counter = 'default') => {
 		twemoji.parse(counterElements[counter].subtitleElement.textElement, {
 			folder: 'svg',
 			ext: '.svg',
+			base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/',
 		});
 		const ghosts = counterElements[counter].subtitleElement.textElement.querySelectorAll('img[alt="👻"]');
 		for (let i = 0; i < ghosts.length; i++) {
