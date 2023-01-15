@@ -410,6 +410,24 @@ const messageListener = (channel, user, message, self) => {
 				}
 			}
 		}
+
+		if (split[0] === '!listCounters') {
+			const container = document.createElement('div');
+			container.setAttribute('style', 'position: absolute; top: 0; left: 0; font-family: monospace; color: white;');
+			for (const key in counters) {
+				if (Object.hasOwnProperty.call(counters, key)) {
+					const counter = counters[key];
+					const element = document.createElement('div');
+					element.setAttribute('style', 'display: inline-block; background-color: black; padding: 5px; margin: 5px;');
+					element.innerText = `${key}: ${counter.count}`;
+					container.appendChild(element);
+				}
+			}
+			document.body.appendChild(container);
+			setTimeout(() => {
+				document.body.removeChild(container);
+			}, 1000);
+		}
 		if (split[0] === '!countdown') {
 
 			let counter = 'countdown';/*split[split.length - 1];
