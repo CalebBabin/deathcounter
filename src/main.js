@@ -413,7 +413,7 @@ const messageListener = (channel, user, message, self) => {
 
 		if (split[0] === '!listCounters') {
 			const container = document.createElement('div');
-			container.setAttribute('style', 'position: absolute; top: 0; left: 0; font-family: monospace; color: white;');
+			container.setAttribute('style', 'position: absolute; top: 0; left: 0; width: 100%; font-family: monospace; color: white; display: flex; flex-wrap: wrap;');
 			for (const key in counters) {
 				if (Object.hasOwnProperty.call(counters, key)) {
 					const counter = counters[key];
